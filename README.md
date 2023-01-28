@@ -2,6 +2,8 @@
 
 This is a proof of concept on how SSR and WebComponents can work together. This currently requires a custom patch in the `react-dom` package.
 
+The WebComponent uses `Declarative Shadow DOM`.
+
 ## Getting Started
 
 1. First, install packages:
