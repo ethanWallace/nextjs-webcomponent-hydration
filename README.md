@@ -1,6 +1,6 @@
 ## WebComponent with React/NextJS SSR and Hydration
 
-This is a proof of concept on how SSR and WebComponents can work together. This currently requires a custom path in the `react-dom` package.
+This is a proof of concept on how SSR and WebComponents can work together. This currently requires a custom patch in the `react-dom` package.
 
 ## Getting Started
 
