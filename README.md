@@ -38,7 +38,7 @@ In the `server.mjs`, we inject DSD into our `ssr-compatible-comp`, which results
     <strong>
     	<slot></slot>
     </strong>
-	</template>
+  </template>
   Hello from SSR and fully compatible react hydration WITHOUT warnings.
 </ssr-compatible-comp>
 ```
