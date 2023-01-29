@@ -45,6 +45,7 @@ export default function Home() {
 
       <ssr-compatible-comp>
         Hello from SSR and fully compatible react hydration WITHOUT warnings.
+        <button type="button" onClick={console.log}>Btn</button>
       </ssr-compatible-comp>
     </>
   )
