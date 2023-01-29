@@ -1,7 +1,6 @@
 ## WebComponent with React/NextJS SSR and Hydration
 
-This is a proof of concept on how SSR and WebComponents can work together. This currently requires a custom patch in the `react-dom` package.
-
+This is a proof of concept on how SSR and WebComponents can work together.
 The WebComponent uses `Declarative Shadow DOM (DSD)`.
 
 There are two webcomponents in this PoC. 
@@ -34,8 +33,8 @@ In the `server.mjs`, we inject DSD into our `ssr-compatible-comp`, which results
 <ssr-compatible-comp>
   <template shadowroot="open">
     <style>
-			strong {
-				color: red;
+      strong {
+  			color: red;
     	}
     </style>
     <strong>
