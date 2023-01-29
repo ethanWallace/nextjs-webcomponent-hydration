@@ -11,12 +11,12 @@ import ssrComponentTemplate from './webcomponents/ssr.mjs'
 const handle = app.getRequestHandler()
 
 app.prepare().then(() => {
-  const server = express()
+	const server = express()
 
 
-  server.use(function (req, res, next) {
-	  req.url = req.originalUrl.replace('/nextjs_custom_server/_next', '/_next');
-	  next(); // be sure to let the next middleware handle the modified request.
+	server.use(function (req, _, next) {
+		req.url = req.originalUrl.replace('/nextjs_custom_server/_next', '/_next');
+		next(); // be sure to let the next middleware handle the modified request.
 	});
 
 	server.get('/__nextjs_original-stack-frame', (req, res) => {
@@ -24,7 +24,7 @@ app.prepare().then(() => {
 	});
 
 	server.get('/_next/*', (req, res) => {
-	  handle(req, res);
+		handle(req, res);
 	});
 
 	server.all('*', async (req, res) => {
@@ -50,7 +50,7 @@ function injectDeclarativeDOM(html) {
 	const injection = `<template shadowroot="open">
 			${ssrComponentTemplate.template()}
 		</template>`;
-	
+
 	let componentInnerStart = html.indexOf('<ssr-compatible-comp>') + "<ssr-compatible-comp>".length;
 
 	return html.slice(0, componentInnerStart) + injection + html.slice(componentInnerStart, html.length);
