@@ -11,7 +11,7 @@ export default class SsrWebComponent extends HTMLElement {
 
     this.#internals = this.attachInternals();
 
-    let shadow = this.#internals.shadowRoot;
+    let shadow = this.#internals.shadowRoot ?? this.shadowRoot;
     if (!shadow) {
       shadow = this.attachShadow({ mode: 'open' });
       shadow.innerHTML = SsrWebComponent.template();

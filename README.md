@@ -10,6 +10,8 @@ There are two webcomponents in this PoC.
 
 ![Result](result.png)
 
+Firefox support is added via a [Polyfill](https://web.dev/declarative-shadow-dom/#polyfill).
+
 ## Technical problem
 
 Before DSD, providing SSR with WebComponents was and still is a pain. WebComponent frameworks implement their custom SSR solutions and when they are integrated with 

@@ -1,4 +1,4 @@
-
+import Head from "next/head";
 import { useEffect } from 'react'
 
 
@@ -15,6 +15,23 @@ export default function Home() {
   }, [])
   return (
     <>
+      <Head>
+        <script dangerouslySetInnerHTML={{
+      __html: `
+          window.addEventListener('load', () => {
+            console.log("polyfill");
+            (function attachShadowRoots(root) {
+              root.querySelectorAll("template[shadowroot]").forEach(template => {
+                const mode = template.getAttribute("shadowroot");
+                const shadowRoot = template.parentNode.attachShadow({ mode });
+                shadowRoot.appendChild(template.content);
+                template.remove();
+                attachShadowRoots(shadowRoot);
+              });
+            })(document);
+          }); `
+        }}/>
+      </Head>
       { /* 
       <p>
       This WebComponent requires a patch from react-dom to ignore Declarative Shadow DOM template shadowroot="open" tags.
