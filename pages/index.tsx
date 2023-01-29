@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 
 const loadWebComponent = async () => {
-  const HelloComponent = await import("./../webcomponents/hello.js");
+  // const HelloComponent = await import("./../webcomponents/hello.js");
   const SsrComponent = await import("./../webcomponents/ssr.mjs");
 };
 
@@ -35,11 +35,13 @@ export default function Home() {
 
       <hr/>
 
+      {/*
       <p>
       This WebComponent is fully compatible. We create the declarative shadow dom in the server.js so its not part of react.
       When the browser parses the added template shadowroot="open", it is instantly converted to a #shadow-root fragment by the browser before
       react even notices something is up behind its back :).
       </p>
+      */}
 
       <ssr-compatible-comp>
         Hello from SSR and fully compatible react hydration WITHOUT warnings.

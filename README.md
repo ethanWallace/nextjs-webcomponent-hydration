@@ -6,17 +6,19 @@ The WebComponent uses `Declarative Shadow DOM (DSD)`.
 
 There are two webcomponents in this PoC. 
 
-`hello-comp` is a manually written WebComponent using DSD.
+`hello-comp` is a manually written WebComponent using DSD. Currently disabled as this requires a react-dom patch (see end of this document).
 `ssr-compatible-comp` is a WebComponent where the DSD is added after NextJS rendered its html. This allows to declare the WebComponent without any manual DSD.
+
+![Result](result.png)
 
 ## Technical problem
 
-Before DSD, providing SSR with WebComponents was and still is a pain. WebComponent frameworks implement their custom SSR solutions and when they are integrated with the SSR capabilities of React
-or other frameworks like React, NextJS, Angular or VueJS, problems start to appear.
+Before DSD, providing SSR with WebComponents was and still is a pain. WebComponent frameworks implement their custom SSR solutions and when they are integrated with 
+other frameworks like React, NextJS, Angular or VueJS, problems start to appear.
 
-The biggest problem is that the code most WebComponent frameworks generate is not isomoprhic between server and client. Most of the time layout is changed, classes are removed and even the whole CSS is scoped and rewritten.
+The biggest problem is that the code most WebComponent frameworks generate is not isomoprhic between server and client. Most of the time layout is changed (handling the shadowroot content), classes are removed and even the whole CSS is scoped and rewritten.
 
-One solution to this is shown in this repo with DSD. Especially with the `ssr-compatible-comp` WebComponent. The WebComponent can be used like your regular, "old", WebComponents, as seen in the `pages/index.tsx`:
+One solution to this is shown in this repo with DSD. Especially with the `ssr-compatible-comp` WebComponent. The WebComponent can be used like regular client-side WebComponents, as seen in the `pages/index.tsx`:
 
 ```js
 <ssr-compatible-comp>
@@ -24,14 +26,18 @@ One solution to this is shown in this repo with DSD. Especially with the `ssr-co
 </ssr-compatible-comp>
 ```
 
-Instead of having to map between scoped and non scoped css classes, attach shadow root and stuff like that, we can use DSD.
-So no special SSR rewrite and rehydration is needed, we can let the browser do its part (as soon as the browser discovers the <template shadowroot="open"> tag). 
+With using DSD as our SSR result, we dont need to handle any custom re-hydration logic, but can use a cross-compatible way of SSR with hydration of WebComponents.
 
-In the `server.mjs`, we inject DSD inside our `ssr-compatible-comp`, which results in the following server-side generated html.
+In the `server.mjs`, we inject DSD into our `ssr-compatible-comp`, which results in the following server-side generated html.
 
 ```html
 <ssr-compatible-comp>
   <template shadowroot="open">
+		<style>
+			strong {
+				color: red;
+			}
+		</style>
     <strong>
   		<slot></slot>
   	</strong>
@@ -41,7 +47,7 @@ In the `server.mjs`, we inject DSD inside our `ssr-compatible-comp`, which resul
 ```
 
 As soon as the browser parses the template shadowroot tag, it is replaced with a #shadow-root fragment and its content placed there automatically. 
-If react now starts with its hydration phase, the element tree is now fully compatible to the one we declared in the `pages/index.tsx`.
+If react now starts with its hydration phase, the element tree is back to its fully compatible form, as the one we declared in the `pages/index.tsx`.
 
 DOM after parsing and before react hydration:
 
@@ -52,8 +58,6 @@ DOM after parsing and before react hydration:
   Hello from SSR and fully compatible react hydration WITHOUT warnings.
 </ssr-compatible-comp>
 ```
-
-React does not care about document-fragments and does not complain about any hydration mismatches.
 
 For more information on DSD, see: [Declarative Shadow DOM](https://github.com/mfreed7/declarative-shadow-dom).
 
