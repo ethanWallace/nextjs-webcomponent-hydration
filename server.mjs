@@ -47,8 +47,8 @@ app.prepare().then(() => {
 // Find our ssr component, inject declarative shadow dom and add template.
 function injectDeclarativeDOM(html) {
   const injection = `<template shadowroot="open">
-			${ssrComponentTemplate.template()}
-		</template>`;
+    ${ssrComponentTemplate.template()}
+  </template>`;
 
   let componentInnerStart = html.indexOf('<ssr-compatible-comp>') + "<ssr-compatible-comp>".length;
 

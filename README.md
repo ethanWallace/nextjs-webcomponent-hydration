@@ -36,7 +36,7 @@ In the `server.mjs`, we inject DSD into our `ssr-compatible-comp`, which results
       strong { color: red; }
     </style>
     <strong>
-    	<slot></slot>
+      <slot></slot>
     </strong>
   </template>
   Hello from SSR and fully compatible react hydration WITHOUT warnings.
