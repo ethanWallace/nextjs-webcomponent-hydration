@@ -1,9 +1,9 @@
 
 
 // Hacky check if nodejs or browser. We just want access to the template() static function for ssr.
-if(typeof process !== 'undefined' && process.version != "") {
+if (typeof process !== 'undefined' && process.version != "") {
 	console.log("Rewrite HTMLElement");
-	global.HTMLElement = class { constructor() {}};
+	global.HTMLElement = class { constructor() { } };
 }
 
 export default class SsrWebComponent extends HTMLElement {
@@ -14,9 +14,9 @@ export default class SsrWebComponent extends HTMLElement {
 		this.#internals = this.attachInternals();
 
 		let shadow = this.#internals.shadowRoot;
-		if(!shadow) {
-			shadow = this.attachShadow({mode: 'open'});
-		  shadow.innerHTML = SsrWebComponent.template();
+		if (!shadow) {
+			shadow = this.attachShadow({ mode: 'open' });
+			shadow.innerHTML = SsrWebComponent.template();
 		}
 
 		// <style> and <strong>
@@ -37,7 +37,7 @@ export default class SsrWebComponent extends HTMLElement {
 	}
 }
 
-if(typeof window !== 'undefined' && typeof window.document !== 'undefined') {
+if (typeof window !== 'undefined' && typeof window.document !== 'undefined') {
 	// TODO: Check if component is already registered, to work with HMR.
 	console.log("Define ssr-compatible-comp");
 	customElements.define('ssr-compatible-comp', SsrWebComponent);

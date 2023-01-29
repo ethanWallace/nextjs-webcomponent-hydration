@@ -33,7 +33,7 @@ export default function Home() {
       </hello-comp>
       */ }
 
-      <hr/>
+      <hr />
 
       {/*
       <p>

@@ -33,14 +33,14 @@ In the `server.mjs`, we inject DSD into our `ssr-compatible-comp`, which results
 ```html
 <ssr-compatible-comp>
   <template shadowroot="open">
-		<style>
+    <style>
 			strong {
 				color: red;
-			}
-		</style>
+    	}
+    </style>
     <strong>
-  		<slot></slot>
-  	</strong>
+    	<slot></slot>
+    </strong>
 	</template>
   Hello from SSR and fully compatible react hydration WITHOUT warnings.
 </ssr-compatible-comp>
@@ -79,8 +79,6 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You see that the `hello-comp` WebComponent is rendered server-side and fully hydrates without any warning.
 
 ### Manual Declarative Shadow DOM
 
