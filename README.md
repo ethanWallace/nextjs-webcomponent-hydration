@@ -33,9 +33,7 @@ In the `server.mjs`, we inject DSD into our `ssr-compatible-comp`, which results
 <ssr-compatible-comp>
   <template shadowroot="open">
     <style>
-      strong {
-  			color: red;
-    	}
+      strong { color: red; }
     </style>
     <strong>
     	<slot></slot>
