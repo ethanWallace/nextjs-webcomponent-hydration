@@ -20,5 +20,7 @@ export default class HelloComponent extends HTMLElement {
 }
 
 
-console.log("Define hello-comp");
-customElements.define('hello-comp', HelloComponent);
+if(window) {
+	console.log("Define hello-comp");
+	customElements.define('hello-comp', HelloComponent);
+}
