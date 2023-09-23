@@ -1,6 +1,5 @@
 // Hacky check if nodejs or browser. We just want access to the template() static function for ssr.
 if (typeof process !== 'undefined' && process.version != "") {
-  console.log("Rewrite HTMLElement");
   global.HTMLElement = class { constructor() { } };
 }
 
