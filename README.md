@@ -1,5 +1,7 @@
 ## WebComponent with React/NextJS SSR and Hydration
 
+> Updated to work without a custom server.js and to use the new `shadowrootmode` attribute.
+
 This is a proof of concept on how SSR and WebComponents can work together.
 The WebComponent uses `Declarative Shadow DOM (DSD)`.
 
@@ -14,12 +16,11 @@ Firefox support is added via a [Polyfill](https://web.dev/declarative-shadow-dom
 
 ## Technical problem
 
-Before DSD, providing SSR with WebComponents was and still is a pain. WebComponent frameworks implement their custom SSR solutions and when they are integrated with 
-other frameworks like React, NextJS, Angular or VueJS, problems start to appear.
+Before DSD, providing SSR with WebComponents was and still is a pain. WebComponent frameworks implement their custom SSR solutions and when they are integrated with other frameworks like React, NextJS, Angular or VueJS, problems start to appear.
 
-The biggest problem is that the code most WebComponent frameworks generate is not isomoprhic between server and client. Most of the time layout is changed (handling the shadowroot content), classes are removed and even the whole CSS is scoped and rewritten.
+The biggest problem is that the code most WebComponent frameworks generate is not isomoprhic between server and client. Most of the time layout is changed (handling the shadowroot content), classes are removed and even the whole CSS is scoped and rewritten (looking at you, StencilJS Hydrate).
 
-One solution to this is shown in this repo with DSD. Especially with the `ssr-compatible-comp` WebComponent. The WebComponent can be used like regular client-side WebComponents, as seen in the `pages/index.tsx`:
+One solution to this is shown in this repo with DSD. The WebComponent can be used like regular client-side WebComponents, as seen in the `pages/index.tsx`:
 
 ```js
 <ssr-compatible-comp>
@@ -79,23 +80,3 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Manual Declarative Shadow DOM
-
-If you want the hello-comp to also work (manually DSD), you need to patch `react-dom`:
-
-Patch `node_modules\react-dom\cjs\react-dom.development.js`. ONLY REQUIRED if you uncomment `hello-comp` in `pages/index.tsx`.
-Search for `updateHostComponent` and add after `var isDirectTextChild = shouldSetTextContent(type, nextProps)` (line 19909):
-
-```js
- // PATCH! Remove template.
-  if(nextChildren != null) {
-    for(var i = 0; i < nextChildren.length; i++) {
-      const child = nextChildren[i];
-      if(child.type === 'template' && 'shadowroot' in child.props) {
-        nextChildren = [...nextChildren].splice(i + 1, 1); // Why i+1? Splicing at 0 does remove the second item...
-      }
-    }
-  }
-```
-
-Delete `.next` folder if one exists, because node_modules are cached by NextJs.

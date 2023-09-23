@@ -1,55 +1,20 @@
-import Head from "next/head";
+import { Wrapper } from "@/components/Wrapper";
 import { useEffect } from 'react'
 
 
 const loadWebComponent = async () => {
-  // const HelloComponent = await import("./../webcomponents/hello.js");
   const SsrComponent = await import("./../webcomponents/ssr.mjs");
+  SsrComponent.define();
 };
 
 export default function Home() {
+
+  // Define the webcomponent on the client.
   useEffect(() => {
-    setTimeout(() => {
-      loadWebComponent().catch(console.error);
-    })
+    loadWebComponent().catch(console.error);
   }, [])
   return (
     <>
-      <Head>
-        <script dangerouslySetInnerHTML={{
-      __html: `
-          window.addEventListener('load', () => {
-            console.log("polyfill");
-            (function attachShadowRoots(root) {
-              root.querySelectorAll("template[shadowroot]").forEach(template => {
-                const mode = template.getAttribute("shadowroot");
-                const shadowRoot = template.parentNode.attachShadow({ mode });
-                shadowRoot.appendChild(template.content);
-                template.remove();
-                attachShadowRoots(shadowRoot);
-              });
-            })(document);
-          }); `
-        }}/>
-      </Head>
-      { /* 
-      <p>
-      This WebComponent requires a patch from react-dom to ignore Declarative Shadow DOM template shadowroot="open" tags.
-      Currently they are still handles as normal HostElementss from react and the reconciler creates a fiber from them.
-
-      Click on this component and see console log. Two events should appear, one from reacts onClick (SyntheticBaseEvent) and one from a internally registered onclick handler (PointerEvent).
-      </p>
-
-      <hello-comp>
-        <template shadowroot="open">
-          <button type="button">
-            <slot></slot>
-          </button>
-        </template>
-        <span onClick={console.log}>Hello</span>
-      </hello-comp>
-      */ }
-
       <hr />
 
       {/*
@@ -60,10 +25,10 @@ export default function Home() {
       </p>
       */}
 
-      <ssr-compatible-comp>
-        Hello from SSR and fully compatible react hydration WITHOUT warnings.
-        <button type="button" onClick={console.log}>Btn</button>
-      </ssr-compatible-comp>
+      <Wrapper>
+        <p>Hello from SSR and fully compatible react hydration WITHOUT warnings.</p>
+        <button type="button" onClick={() => alert("hi from react/nextjs")}>Click me</button>
+      </Wrapper>
     </>
   )
 }
