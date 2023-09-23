@@ -4,19 +4,18 @@ if (typeof process !== 'undefined' && process.version != "") {
   global.HTMLElement = class { constructor() { } };
 }
 
+import { createRoot } from 'react-dom/client';
+
 export default class SsrWebComponent extends HTMLElement {
-  #internals = null;
   constructor() {
     super();
 
-    this.#internals = this.attachInternals();
-    
-
-    let shadow = this.#internals.shadowRoot ?? this.shadowRoot;
+    let shadow = this.shadowRoot;
     if (!shadow) {
       console.log("Attach shadow");
       shadow = this.attachShadow({ mode: 'open' });
-      shadow.innerHTML = SsrWebComponent.template();
+      const root = createRoot(shadow);
+      root.render(SsrWebComponent.template());
     } else {
       console.log("Reuse ShadowRoot from DSD");
     }
@@ -25,30 +24,36 @@ export default class SsrWebComponent extends HTMLElement {
   // We use this as SSR base as well as fallback, if only client side initialization is used.
   // On SSR, we need to add the declarative shadow dom template.
   static template() {
-    return `
-      <style>
-        strong {
-            color: red;
-        }
-        ::slotted(button) {
-          background-color: black;
-          color: white;
-          padding: 10px 15px;
-          border: 0;
-          text-transform: uppercase;
-          cursor: pointer;
-        }
+    return (
+      <>
+        <style>
+          {`
+          strong {
+              color: red;
+          }
+          ::slotted(button) {
+            background-color: black;
+            color: white;
+            padding: 10px 15px;
+            border: 0;
+            text-transform: uppercase;
+            cursor: pointer;
+          }
 
-        ::slotted(button:hover) {
-          background-color: #555;
-        }
-      </style>
-      <strong>
-        <slot></slot>
-      </strong>`
+          ::slotted(button:hover) {
+            background-color: #555;
+          }
+          `}
+        </style>
+        <strong>
+          <slot></slot>
+        </strong>
+      </>
+      )
   }
 }
 
+// Defines the WebComponent at the CustomElementRegistry.
 export function define() {
   if (typeof window !== 'undefined' && typeof window.document !== 'undefined') {
     // TODO: Check if component is already registered, to work with HMR.

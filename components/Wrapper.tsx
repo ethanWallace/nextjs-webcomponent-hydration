@@ -15,12 +15,13 @@ export function Wrapper({children}: {children: any}) {
     let content;
     if(typeof window === 'undefined') {
         /**
-         * Here we create a DSD on the server and set the components code as innerHTML.
+         * Here we create a DSD wrapper on the server and set the components code as innerHTML.
          * This could be for example StencilJS render() result.
          */
         content = (
             <ssr-compatible-comp>
-                <template {...{shadowRootMode: "open"}} dangerouslySetInnerHTML={{__html: SsrWebComponent.template()}}>
+                <template {...{shadowRootMode: "open"}}>
+                    {SsrWebComponent.template()}
                 </template>
                 {children}
             </ssr-compatible-comp>
