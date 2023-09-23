@@ -3,11 +3,7 @@
 > Updated to work without a custom server.js and to use the new `shadowrootmode` attribute.
 
 This is a proof of concept on how SSR and WebComponents can work together.
-The WebComponent uses `Declarative Shadow DOM (DSD)`.
-
-`ssr-compatible-comp` is a WebComponent where the DSD is added after NextJS rendered its html. This allows to declare the WebComponent without any manual DSD.
-
-![Result](result.png)
+The WebComponents use a `Declarative Shadow DOM (DSD)`.
 
 Firefox support is added via a [Polyfill](https://web.dev/declarative-shadow-dom/#polyfill).
 
@@ -33,13 +29,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## StencilJS
 
-This example includes a StencilJS component. 
+This example includes a StencilJS component, which is rendered on the Server using a React wrapper.
 
 It currently does the following:
+
 - Instantiates the component class.
 - Applies props to the instance.
 - Calls the render function of the instance.
 - Appends the CSS styles in a `<style>` tag.
+
+Lifecycles are not called.
 
 As non of the Stencil hydrate functions are public, the `components/StencilWrapper.tsx` wrapper converts Stencils' VNodes to Preact VNodes and uses `preact-render-to-string` to render to HTML.
 
