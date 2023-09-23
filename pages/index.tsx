@@ -15,8 +15,6 @@ export default function Home() {
   }, [])
   return (
     <>
-      <hr />
-
       {/*
       <p>
       This WebComponent is fully compatible. We create the declarative shadow dom in the server.js so its not part of react.

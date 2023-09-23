@@ -11,6 +11,10 @@ export default class SsrWebComponent extends HTMLElement {
     super();
 
     let shadow = this.shadowRoot;
+
+    // TODO: Maybe a react root should always be created even if an DSD shadowroot already exists, 
+    // because there may be code in the component which is only invoked on the client, which changes the component.
+    // But for this example this works and shows that we are not recreating the shadowRoot, but reuse the one from DSD.
     if (!shadow) {
       console.log("Attach shadow");
       shadow = this.attachShadow({ mode: 'open' });
