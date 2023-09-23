@@ -5,9 +5,6 @@
 This is a proof of concept on how SSR and WebComponents can work together.
 The WebComponent uses `Declarative Shadow DOM (DSD)`.
 
-There are two webcomponents in this PoC. 
-
-`hello-comp` is a manually written WebComponent using DSD. Currently disabled as this requires a react-dom patch (see end of this document).
 `ssr-compatible-comp` is a WebComponent where the DSD is added after NextJS rendered its html. This allows to declare the WebComponent without any manual DSD.
 
 ![Result](result.png)
