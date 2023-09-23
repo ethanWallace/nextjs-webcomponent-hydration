@@ -19,6 +19,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "webcomponents/stencil/dist/*"],
+  "exclude": ["node_modules", "webcomponents/stencil/ssr/src"]
 }

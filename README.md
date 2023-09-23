@@ -11,6 +11,64 @@ The WebComponent uses `Declarative Shadow DOM (DSD)`.
 
 Firefox support is added via a [Polyfill](https://web.dev/declarative-shadow-dom/#polyfill).
 
+## Getting Started
+
+1. First, install npm packages, build StencilJS and link the `stencil-components` package with one command.
+
+`npm run setup`
+
+
+2. Run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+
+## StencilJS
+
+This example includes a StencilJS component. 
+
+It currently does the following:
+- Instantiates the component class.
+- Applies props to the instance.
+- Calls the render function of the instance.
+- Appends the CSS styles in a `<style>` tag.
+
+As non of the Stencil hydrate functions are public, the `components/StencilWrapper.tsx` wrapper converts Stencils' VNodes to Preact VNodes and uses `preact-render-to-string` to render to HTML.
+
+For our component this generates the following SSR html:
+
+```html
+<my-component first="Stencil" last="Js">
+  <template shadowRootMode="open">
+    <div>
+      Hello, World! I'm Stencil Js<button>Click me too</button>
+    </div>
+    <style>
+      :host {
+        display: block
+      }
+
+      div {
+        font-size: 18px;
+        font-style: italic
+      }
+    </style>
+  </template>
+</my-component>
+```
+
+### Problems
+
+With Firefox, there is an Error `Operation not allowed`, because Stencil calls `this.attachShadow` on an Element that already has a Shadow DOM via our DSD. Chrome does not seem to care.
+
 ## Technical problem
 
 Before DSD, providing SSR with WebComponents was and still is a pain. WebComponent frameworks implement their custom SSR solutions and when they are integrated with other frameworks like React, NextJS, Angular or VueJS, problems start to appear.
@@ -58,22 +116,4 @@ DOM after parsing and before react hydration:
 
 For more information on DSD, see: [Declarative Shadow DOM](https://github.com/mfreed7/declarative-shadow-dom).
 
-## Getting Started
-
-1. First, install packages:
-
-`npm install`
-
-
-2. Run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

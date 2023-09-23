@@ -5,6 +5,7 @@ if (typeof process !== 'undefined' && process.version != "") {
 }
 
 import { createRoot } from 'react-dom/client';
+import { render } from "preact-render-to-string";
 
 export default class SsrWebComponent extends HTMLElement {
   constructor() {
@@ -23,6 +24,10 @@ export default class SsrWebComponent extends HTMLElement {
     } else {
       console.log("Reuse ShadowRoot from DSD");
     }
+  }
+
+  connectedCallback() {
+    console.log("ssr-compatible-comp connected");
   }
 
   // We use this as SSR base as well as fallback, if only client side initialization is used.

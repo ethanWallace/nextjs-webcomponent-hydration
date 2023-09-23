@@ -1,3 +1,4 @@
+import { StencilWrapper } from "@/components/StencilWrapper";
 import { Wrapper } from "@/components/Wrapper";
 import { useEffect } from 'react'
 
@@ -5,14 +6,18 @@ import { useEffect } from 'react'
 const loadWebComponent = async () => {
   const SsrComponent = await import("./../webcomponents/ssr.mjs");
   SsrComponent.define();
+
+  // Workaround so we do not need to provide polyfills.js via server.
+  const loader = await import("stencil-components/dist/esm/loader");
+  loader.defineCustomElements();
 };
 
 export default function Home() {
-
   // Define the webcomponent on the client.
   useEffect(() => {
     loadWebComponent().catch(console.error);
   }, [])
+
   return (
     <>
       {/*
@@ -27,6 +32,10 @@ export default function Home() {
         <p>Hello from SSR and fully compatible react hydration WITHOUT warnings.</p>
         <button type="button" onClick={() => alert("hi from react/nextjs")}>Click me</button>
       </Wrapper>
+
+      <hr />
+
+      <StencilWrapper first="Stencil" last="Js"></StencilWrapper>
     </>
   )
 }

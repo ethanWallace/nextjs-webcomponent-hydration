@@ -11,6 +11,9 @@ declare global {
     }
 }
 
+/**
+ * This wrapper uses our handwritten WebComponent and enables DSD for that component.
+ */
 export function Wrapper({ children }: { children: any }) {
     let content;
     if (typeof window === 'undefined') {
