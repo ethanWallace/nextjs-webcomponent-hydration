@@ -11,14 +11,14 @@ declare global {
 }
 
 // Converts Stencil VNodes to Preact VNodes.
-function convertToPreact(node: any, curr: any) : any {
-    if(!node) {
+function convertToPreact(node: any, curr: any): any {
+    if (!node) {
         return null;
     }
 
-    if(Array.isArray(node)) {
-        for(let child of node) {
-            if(child.$tag$) {
+    if (Array.isArray(node)) {
+        for (let child of node) {
+            if (child.$tag$) {
                 let newNode: any = {
                     type: child.$tag$,
                     key: null,
@@ -30,11 +30,11 @@ function convertToPreact(node: any, curr: any) : any {
 
                 curr.props.children.push(newNode)
 
-                if(child.$children$) {
+                if (child.$children$) {
                     newNode.props.children = [];
                     convertToPreact(child.$children$, newNode);
                 }
-            } else if(node.length == 1) {
+            } else if (node.length == 1) {
                 curr.props.children = child.$text$;
             } else {
                 curr.props.children.push(child.$text$);
@@ -50,7 +50,7 @@ function convertToPreact(node: any, curr: any) : any {
     newNode.key = null;
     newNode.constructor = undefined;
 
-    if(node.$children$) {
+    if (node.$children$) {
         newNode.props.children = [];
         convertToPreact(node.$children$, newNode);
     }
@@ -58,17 +58,21 @@ function convertToPreact(node: any, curr: any) : any {
     return newNode;
 }
 
+export const MyComponent = (props: any) => StencilWrapper(props, my_component, "my-component");
+
 /**
- * This wrapper wraps the StencilJS WebComponent.
+ * This wrapper wraps the StencilJS WebComponent. Can render a StencilJS component using Declarative Shadow DOM (DSD).
  */
-export function StencilWrapper(props: any) {
+export function StencilWrapper(props: any, ctor: new(hostRef?: any) => HTMLElement, tagName: string) {
     let content;
-    
-    if (typeof window === 'undefined') {
-        let {children, ...p} = props;
+    const Tag = tagName;
+
+    // SSR rendering of component using DSD.
+    if (!props.disableSSR && typeof window === 'undefined') {
+        let { children, ...p } = props;
 
         // Pass properties through to the Stencil component.
-        const instance = new my_component(new WeakMap()) as any;
+        const instance = new ctor(new WeakMap()) as any;
         Object.assign(instance, p);
 
         // Convert the Stencil VNodes to Preact VNodes and append the component styles.
@@ -76,22 +80,22 @@ export function StencilWrapper(props: any) {
         const renderResult = convertToPreact(instance.render(), null);
         let renderedHtml = render(renderResult);
         renderedHtml += `<style>${my_component.style}</style>`;
-        
+
         /**
          * We use preacts render-to-string to render the StencilJS component, which uses preacts hyperscript (h) function internally.
          */
         content = (
-            <my-component {...props}>
-                <template {...{ shadowRootMode: "open" }} dangerouslySetInnerHTML={{__html: renderedHtml}}/>
+            <Tag {...props}>
+                <template {...{ shadowRootMode: "open" }} dangerouslySetInnerHTML={{ __html: renderedHtml }} />
                 {props.children}
-            </my-component>
+            </Tag>
         );
     } else {
         // For the client (and for React to not cause hydration errors), this is the DOM react should see and work with.
         content = (
-            <my-component {...props}>
+            <Tag {...props}>
                 {props.children}
-            </my-component>
+            </Tag>
         );
     }
 

@@ -1,4 +1,4 @@
-import { StencilWrapper } from "@/components/StencilWrapper";
+import { MyComponent, StencilWrapper } from "@/components/StencilWrapper";
 import { Wrapper } from "@/components/Wrapper";
 import { useEffect } from 'react'
 
@@ -35,7 +35,11 @@ export default function Home() {
 
       <hr />
 
-      <StencilWrapper first="Stencil" last="Js"></StencilWrapper>
+      {/**
+       * This is a custom wrapper around a StencilJS component.
+       */}
+      <MyComponent first="Stencil" last="SSR"></MyComponent>
+      <MyComponent first="No" last="SSR" disableSSR></MyComponent>
     </>
   )
 }
