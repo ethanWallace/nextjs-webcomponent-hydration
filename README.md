@@ -1,3 +1,5 @@
+> Beware: The solution here is far from perfect and not what I would recommend doing currently. Converting nodes to other formats is CPU heavy (and GC heavy because of the many objects created).
+
 ## WebComponent with React/NextJS SSR and Hydration
 
 > Updated to work without a custom server.js and to use the new `shadowrootmode` attribute.
