@@ -1,4 +1,5 @@
 > Beware: The solution here is far from perfect and not what I would recommend doing currently. Converting nodes to other formats is CPU heavy (and GC heavy because of the many objects created).
+> I rather recommend creating native components for the framework you use (React in case of NextJS) and create wrappers around them to render the DSD.
 
 ## WebComponent with React/NextJS SSR and Hydration
 
