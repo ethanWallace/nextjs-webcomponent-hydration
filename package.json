@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "setup": "npm i && cd webcomponents/stencil/ssr && npm i && npm run build && npm link && cd ../../../ && npm link stencil-components",
+    "setup": "npm i && cd webcomponents/stencil/ssr && npm i && npm run build && sudo npm link && cd ../../../ && sudo npm link stencil-components",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

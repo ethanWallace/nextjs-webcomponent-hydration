@@ -1,4 +1,5 @@
 import { my_component } from "stencil-components/dist/esm/my-component.entry";
+import { gcds_button, gcds_alert, gcds_header, gcds_footer } from "@cdssnc/gcds-components/dist/esm/gcds-alert_40.entry";
 import render from 'preact-render-to-string';
 
 // To shut up TS.
@@ -45,7 +46,7 @@ function convertToPreact(node: any, curr: any): any {
     }
 
     let newNode: any = {};
-    newNode.type = node.$tag$;
+    newNode.type = typeof node.$tag$ !== 'object' ? node.$tag$ : 'host';
     newNode.props = {};
     newNode.key = null;
     newNode.constructor = undefined;
@@ -59,6 +60,10 @@ function convertToPreact(node: any, curr: any): any {
 }
 
 export const MyComponent = (props: any) => StencilWrapper(props, my_component, "my-component");
+export const GcdsButton = (props: any) => StencilWrapper(props, gcds_button, "gcds-button");
+export const GcdsAlert = (props: any) => StencilWrapper(props, gcds_alert, "gcds-alert");
+export const GcdsHeader = (props: any) => StencilWrapper(props, gcds_header, "gcds-header");
+export const GcdsFooter = (props: any) => StencilWrapper(props, gcds_footer, "gcds-footer");
 
 /**
  * This wrapper wraps the StencilJS WebComponent. Can render a StencilJS component using Declarative Shadow DOM (DSD).
@@ -79,14 +84,14 @@ export function StencilWrapper(props: any, ctor: new(hostRef?: any) => HTMLEleme
         // Stencil will remove the custom <style> tag upon hydration, but we have the correct styles this way from the get go.
         const renderResult = convertToPreact(instance.render(), null);
         let renderedHtml = render(renderResult);
-        renderedHtml += `<style>${my_component.style}</style>`;
+        renderedHtml += `<style>${ctor.style}</style>`;
 
         /**
          * We use preacts render-to-string to render the StencilJS component, which uses preacts hyperscript (h) function internally.
          */
         content = (
             <Tag {...props}>
-                <template {...{ shadowRootMode: "open" }} dangerouslySetInnerHTML={{ __html: renderedHtml }} />
+                <template {...{ shadowrootmode: "open" }} shadowrootdelegatesfocus dangerouslySetInnerHTML={{ __html: renderedHtml }} />
                 {props.children}
             </Tag>
         );
