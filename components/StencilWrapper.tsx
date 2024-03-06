@@ -59,6 +59,7 @@ function convertToPreact(node: any, curr: any): any {
     return newNode;
 }
 
+// Component creation
 export const MyComponent = (props: any) => StencilWrapper(props, my_component, "my-component");
 export const GcdsButton = (props: any) => StencilWrapper(props, gcds_button, "gcds-button");
 export const GcdsAlert = (props: any) => StencilWrapper(props, gcds_alert, "gcds-alert");
